@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const hotelRoutes = require('./routes/hotelRoutes');
+const hotelRoutes = require('./routes/hotels');
 require('dotenv').config();
 
 const app = express();
@@ -10,11 +10,22 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 
 // Routes
+console.log('Mounting hotel routes at /api/hotels');
 app.use('/api/hotels', hotelRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Server error:', err.stack);
+    res.status(500).json({ message: 'Internal server error' });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
