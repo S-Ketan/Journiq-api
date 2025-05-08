@@ -3,6 +3,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const hotelRoutes = require('./routes/hotelRoutes');
 const destinationRoutes = require('./routes/destination');
+const bookingRoutes = require('./routes/bookings');
 require('dotenv').config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.json());
 console.log('Mounting hotel routes at /api/hotelRoutes');
 app.use('/api/hotels', hotelRoutes);
 app.use('/api/destinations', destinationRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
